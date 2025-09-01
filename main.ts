@@ -10,7 +10,10 @@ import { format, isValid } from 'date-fns';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import dotenv from 'dotenv';
 
+
+dotenv.config();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -28,7 +31,7 @@ const serverState = {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+const ORDERS_FILE = path.join(__dirname, 'orders.json');
 
 function parseCsvBuffer(buffer: Buffer): Promise<any[]> {
     return new Promise((resolve, reject) => {
@@ -377,6 +380,49 @@ server.registerTool(
         const orderId = `ORD-${Date.now()}`;
         const totalPrice = serverState.cart.reduce((total, item) => total + (item.quantity * item.price), 0);
 
+
+        try {
+            
+            let allOrders: any[] = [];
+            if (fs.existsSync(ORDERS_FILE)) {
+                const fileContent = fs.readFileSync(ORDERS_FILE, 'utf-8');
+                
+                if (fileContent) {
+                    allOrders = JSON.parse(fileContent);
+                }
+            }
+            
+            
+            const newOrder = {
+                orderId,
+                deliveryDate,
+                deliveryTime,
+                totalPrice: parseFloat(totalPrice.toFixed(2)),
+                items: [...serverState.cart], 
+                orderTimestamp: new Date().toISOString()
+            };
+
+            
+            allOrders.push(newOrder);
+
+            
+            
+            fs.writeFileSync(ORDERS_FILE, JSON.stringify(allOrders, null, 2));
+
+            console.error(`--- New Order Received and SAVED to orders.json ---`);
+            console.error(`Order ID: ${orderId}`);
+            console.error(`Items:`, JSON.stringify(serverState.cart, null, 2));
+            
+        } catch (error: any) {
+            console.error("[placeOrder File Error] Failed to write to orders.json:", error);
+            
+            return {
+                content: [{
+                    type: "text",
+                    text: `Error: The order was validated, but could not be saved due to a server file error. Please contact support.`
+                }]
+            };
+        }
 
         console.error("--- New Order Received ---");
         console.error(`Order ID: ${orderId}`);

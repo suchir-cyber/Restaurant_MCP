@@ -1,15 +1,26 @@
 [
   {
-    "order_id": "8922ac2b-84f5-48d2-844e-f49eac807d7f",
+    "orderId": "ORD-1756711201818",
+    "deliveryDate": "2025-09-03",
+    "deliveryTime": "20:00",
+    "totalPrice": 18.24,
     "items": [
       {
-        "item_name": "Classic Burger",
-        "quantity": 1
+        "itemName": "Classic Burger",
+        "quantity": 1,
+        "price": 12.99
+      },
+      {
+        "itemName": "French Fries",
+        "quantity": 1,
+        "price": 3.5
+      },
+      {
+        "itemName": "Bottled Water",
+        "quantity": 1,
+        "price": 1.75
       }
     ],
-    "total_price": 12.99,
-    "delivery_date": "2025-0-31",
-    "delivery_time": "19:00",
-    "order_timestamp": "2025-08-30T19:02:22.400+05:30"
+    "orderTimestamp": "2025-09-01T07:20:01.818Z"
   }
 ]
