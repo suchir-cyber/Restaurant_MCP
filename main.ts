@@ -11,6 +11,7 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
