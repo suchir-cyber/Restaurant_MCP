@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.4",
+    "@inquirer/prompts": "^7.5.3",
+    "@modelcontextprotocol/sdk": "^1.13.0",
     "csv-parser": "^3.2.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
